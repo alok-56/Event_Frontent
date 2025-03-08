@@ -1,13 +1,12 @@
 import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
-import { Dot } from "lucide-react"
 import Autoplay from "embla-carousel-autoplay"
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
+  // CarouselNext,
+  // CarouselPrevious,
   type CarouselApi,
 } from "../../components/ui/carousel"
 import { cn } from "../../lib/utils"
@@ -16,64 +15,64 @@ import { upComingEventsData } from "../../utils/data";
 // Sample data - replace with your actual data import
 
 
-const CountDown = ({ dateInt }: { dateInt: string }) => {
-  const [days, setDays] = useState(0)
-  const [hours, setHours] = useState(0)
-  const [minutes, setMinutes] = useState(0)
-  const [seconds, setSeconds] = useState(0)
+// const CountDown = ({ dateInt }: { dateInt: string }) => {
+//   const [days, setDays] = useState(0)
+//   const [hours, setHours] = useState(0)
+//   const [minutes, setMinutes] = useState(0)
+//   const [seconds, setSeconds] = useState(0)
 
-  useEffect(() => {
-    const target = new Date(dateInt)
+//   useEffect(() => {
+//     const target = new Date(dateInt)
 
-    const interval = setInterval(() => {
-      const now = new Date()
-      const difference = target.getTime() - now.getTime()
+//     const interval = setInterval(() => {
+//       const now = new Date()
+//       const difference = target.getTime() - now.getTime()
 
-      const d = Math.floor(difference / (1000 * 60 * 60 * 24))
-      setDays(d)
+//       const d = Math.floor(difference / (1000 * 60 * 60 * 24))
+//       setDays(d)
 
-      const h = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
-      setHours(h)
+//       const h = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
+//       setHours(h)
 
-      const m = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60))
-      setMinutes(m)
+//       const m = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60))
+//       setMinutes(m)
 
-      const s = Math.floor((difference % (1000 * 60)) / 1000)
-      setSeconds(s)
-    }, 1000)
+//       const s = Math.floor((difference % (1000 * 60)) / 1000)
+//       setSeconds(s)
+//     }, 1000)
 
-    return () => clearInterval(interval)
-  }, [dateInt])
+//     return () => clearInterval(interval)
+//   }, [dateInt])
 
-  return (
-    <div className="flex gap-4 text-white">
-      <div className="flex flex-col items-center">
-        <div className="bg-black/40 backdrop-blur-sm w-16 h-16 rounded-lg flex items-center justify-center text-2xl font-bold">
-          {days}
-        </div>
-        <span className="text-sm mt-1">Days</span>
-      </div>
-      <div className="flex flex-col items-center">
-        <div className="bg-black/40 backdrop-blur-sm w-16 h-16 rounded-lg flex items-center justify-center text-2xl font-bold">
-          {hours}
-        </div>
-        <span className="text-sm mt-1">Hours</span>
-      </div>
-      <div className="flex flex-col items-center">
-        <div className="bg-black/40 backdrop-blur-sm w-16 h-16 rounded-lg flex items-center justify-center text-2xl font-bold">
-          {minutes}
-        </div>
-        <span className="text-sm mt-1">Minutes</span>
-      </div>
-      <div className="flex flex-col items-center">
-        <div className="bg-black/40 backdrop-blur-sm w-16 h-16 rounded-lg flex items-center justify-center text-2xl font-bold">
-          {seconds}
-        </div>
-        <span className="text-sm mt-1">Seconds</span>
-      </div>
-    </div>
-  )
-}
+//   return (
+//     <div className="flex gap-4 text-white">
+//       <div className="flex flex-col items-center">
+//         <div className="bg-black/40 backdrop-blur-sm w-16 h-16 rounded-lg flex items-center justify-center text-2xl font-bold">
+//           {days}
+//         </div>
+//         <span className="text-sm mt-1">Days</span>
+//       </div>
+//       <div className="flex flex-col items-center">
+//         <div className="bg-black/40 backdrop-blur-sm w-16 h-16 rounded-lg flex items-center justify-center text-2xl font-bold">
+//           {hours}
+//         </div>
+//         <span className="text-sm mt-1">Hours</span>
+//       </div>
+//       <div className="flex flex-col items-center">
+//         <div className="bg-black/40 backdrop-blur-sm w-16 h-16 rounded-lg flex items-center justify-center text-2xl font-bold">
+//           {minutes}
+//         </div>
+//         <span className="text-sm mt-1">Minutes</span>
+//       </div>
+//       <div className="flex flex-col items-center">
+//         <div className="bg-black/40 backdrop-blur-sm w-16 h-16 rounded-lg flex items-center justify-center text-2xl font-bold">
+//           {seconds}
+//         </div>
+//         <span className="text-sm mt-1">Seconds</span>
+//       </div>
+//     </div>
+//   )
+// }
 
 const UpComingEvents = () => {
   const [api, setApi] = useState<CarouselApi>()

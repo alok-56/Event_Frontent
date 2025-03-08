@@ -3,11 +3,11 @@ import UpComingEvents from "../UpComingEvents/UpComingEvents.tsx";
 // import Collaboration from '../Collaboration/Collaboration.tsx'
 // import News from '../News/News.tsx'
 // import Gallery from '../Gallery/Gallery.tsx'
-import Partners from "../Partners/Partners.tsx";
+// import Partners from "../Partners/Partners.tsx";
 import Footer from "../layout/Footer.tsx";
 import { motion } from "framer-motion";
-import Section from "./section.tsx";
-import Link from "../AdditionalLink/Link.tsx";
+// import Section from "./section.tsx";
+// import Link from "../AdditionalLink/Link.tsx";
 
 import model from "../../assets/HeroImg/model.png";
 import application from "../../assets/HeroImg/application.png";

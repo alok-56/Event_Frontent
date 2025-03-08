@@ -2,13 +2,13 @@
 
 import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
-import { Cpu, Lightbulb, Target, CheckCircle, Building, Microscope, Rocket, Zap, Braces } from "lucide-react"
+import { Lightbulb, Target, CheckCircle, Rocket } from "lucide-react"
 import logo from "../../assets/logo.png";
 
 // Replace these with your actual image imports
-const model = "/placeholder.svg?height=400&width=800"
-const application = "/placeholder.svg?height=400&width=600"
-const scope = "/placeholder.svg?height=400&width=800"
+// const model = "/placeholder.svg?height=400&width=800"
+// const application = "/placeholder.svg?height=400&width=600"
+// const scope = "/placeholder.svg?height=400&width=800"
 
 const QuantumAcceleratorCenter = () => {
   const [isLoaded, setIsLoaded] = useState(false)

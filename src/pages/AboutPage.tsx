@@ -6,7 +6,7 @@ import Publication from "../components/About/Publication.tsx";
 const AboutPage = () => {
   const { submenu } = useParams();
   const [activeSubHeading, setActiveSubHeading] = useState(0);
-  console.log(submenu);
+  console.log(activeSubHeading);
   useEffect(() => {
     if (submenu === "concept") {
       setActiveSubHeading(1);

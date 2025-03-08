@@ -25,6 +25,7 @@ const Resaerch: React.FC = () => {
   const [editResearch, setEditResearch] = useState<Research | null>(null);
   const [loading, setLoading] = useState(false);
   const [deleting, setDeleting] = useState<string | null>(null);
+  console.log(deleting)
 
   // Multi-value fields
   const [education, setEducation] = useState<string[]>([]);

@@ -3,13 +3,13 @@ import { useParams } from "react-router-dom";
 import NavBar from "../components/layout/NavBar.tsx";
 import PhDStudentsCard from "../components/People/PhDStudentsCard.tsx";
 import StaffSection from "../components/People/StaffSection.tsx";
-import { phdCardData } from "../utils/data.ts";
 import ResearchAssociate from "../components/People/ResearchAssociate.tsx";
 import { GetstudentsApi } from "../Api/Admin/Students.tsx";
 
 const PeoplePage = () => {
   const { submenu } = useParams();
   const [activeSubHeading, setActiveSubHeading] = useState(0);
+  console.log(activeSubHeading)
   const [data, setData] = useState<Event[]>([]);
   useEffect(() => {
     if (submenu === "investigators") {

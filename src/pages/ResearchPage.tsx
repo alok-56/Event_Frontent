@@ -9,7 +9,7 @@ import Design from "../components/Research/Design.tsx";
 const ResearchPage = () => {
   const { submenu } = useParams();
   const [activeSubHeading, setActiveSubHeading] = useState(0);
-
+console.log(activeSubHeading)
   useEffect(() => {
     if (submenu === "design") {
       setActiveSubHeading(1);
