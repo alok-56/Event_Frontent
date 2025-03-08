@@ -1,14 +1,10 @@
 import { useEffect, useRef } from 'react';
 import { MdChevronLeft, MdChevronRight } from 'react-icons/md';
-import imgDataStore from '../../store/imgDataStore';
+
 
 const ImageBar = () => {
     const sliderRef = useRef<HTMLDivElement>(null);
-    const {imageData,fetchImgData}:any = imgDataStore();
-  
-    useEffect(() => {
-      fetchImgData();
-    }, [imageData]);
+    
 
     const slideLeft = () => {
         if (sliderRef.current) {
@@ -36,7 +32,7 @@ const ImageBar = () => {
   return (
       <div className='relative flex items-center w-11/12 mx-auto select-none'>
           <MdChevronLeft className='text-gray-500 hidden sm:block cursor-pointer hover:text-[#0f2444]' onClick={slideLeft} size={40} />
-          <div
+          {/* <div
               ref={sliderRef}
               className='w-full h-full overflow-x-scroll scroll whitespace-nowrap scroll-smooth no-scrollbar '
           >
@@ -48,7 +44,7 @@ const ImageBar = () => {
                       key={index}
                   />
               ))}
-          </div>
+          </div> */}
           <MdChevronRight className='text-gray-500 hidden sm:block cursor-pointer hover:text-[#0f2444]' onClick={slideRight} size={40} />
       </div>
   )
