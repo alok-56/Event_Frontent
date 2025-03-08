@@ -3,9 +3,8 @@ import { useLocation } from "react-router-dom";
 
 import Collaboration from "./AdminPage/Collabration";
 
-
 const AdminDashboardPage: React.FC = () => {
-  const location = useLocation(); 
+  const location = useLocation();
 
   return (
     <div>
