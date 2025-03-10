@@ -10,7 +10,7 @@ import logo from "../../assets/logo.png";
 // const application = "/placeholder.svg?height=400&width=600"
 // const scope = "/placeholder.svg?height=400&width=800"
 
-const QuantumAcceleratorCenter = () => {
+const QuantumAcceleratorCenter = ({data}:any) => {
   const [isLoaded, setIsLoaded] = useState(false)
 
   useEffect(() => {
@@ -74,8 +74,7 @@ const QuantumAcceleratorCenter = () => {
       iconBg: "bg-blue-500",
       content: (
         <p className="text-gray-600">
-          Develop and deploy sector-specific ambient temperature photonic quantum accelerator chip technology based on
-          Lithium Niobate on Insulator (LNOI) photonic integrated circuit (PIC) platform.
+          {data?.Mission}
         </p>
       ),
     },
@@ -85,13 +84,7 @@ const QuantumAcceleratorCenter = () => {
       color: "bg-gradient-to-br from-purple-50 to-purple-100 border-purple-200",
       iconBg: "bg-purple-500",
       content: (
-        <ul className="list-disc list-inside text-gray-600 space-y-2 ml-1">
-          <li>
-            Development of indigenous technology for SME production of ambient temperature photonic quantum accelerator
-            chip.
-          </li>
-          <li>Deployment of the as-developed technology through R&D services and start-ups.</li>
-        </ul>
+        <p>  {data?.Vission}</p>
       ),
     },
     {
@@ -100,14 +93,7 @@ const QuantumAcceleratorCenter = () => {
       color: "bg-gradient-to-br from-emerald-50 to-emerald-100 border-emerald-200",
       iconBg: "bg-emerald-500",
       content: (
-        <p className="text-gray-600">
-          To establish a self-sustainable center entitled{" "}
-          <span className="font-semibold">
-            "National Centre for Quantum Accelerator Chip using Lithium Niobate (LN) on Insulator Photonic Integrated
-            Circuit (NCQAC)"
-          </span>{" "}
-          at IIT Kharagpur in partnership with CMET, Pune.
-        </p>
+        <p>  {data?.Objective}</p>
       ),
     },
     {
@@ -116,11 +102,7 @@ const QuantumAcceleratorCenter = () => {
       color: "bg-gradient-to-br from-amber-50 to-amber-100 border-amber-200",
       iconBg: "bg-amber-500",
       content: (
-        <ul className="list-disc list-inside text-gray-600 space-y-2 ml-1">
-          <li>Facility Development</li>
-          <li>Technology Development</li>
-          <li>Technology Opportunity Leads</li>
-        </ul>
+       <p>{data?.Outcomes}</p>
       ),
     },
     // {

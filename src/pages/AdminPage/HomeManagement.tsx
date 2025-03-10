@@ -26,14 +26,15 @@ const HomeManagement: React.FC = () => {
   const [loading, setLoading] = useState(false);
 
   // Multi-value fields
-  const [sliderImages, setSliderImages] = useState<string[]>([]);
+  const [sliderImages, setSliderImages] = useState<File[]>([]);
+  const [sliderImagePreviews, setSliderImagePreviews] = useState<string[]>([]); // For previews
   const [mission, setMission] = useState<string[]>([]);
   const [vission, setVission] = useState<string[]>([]);
   const [objective, setObjective] = useState<string[]>([]);
   const [outcomes, setOutcomes] = useState<string[]>([]);
-  const [scopeImage, setScopeImage] = useState<string>("");
-  const [applicationImage, setApplicationImage] = useState<string>("");
-  const [modalImage, setModalImage] = useState<string>("");
+  const [scopeImage, setScopeImage] = useState<File | null>(null);
+  const [applicationImage, setApplicationImage] = useState<File | null>(null);
+  const [modalImage, setModalImage] = useState<File | null>(null);
 
   useEffect(() => {
     fetchHomeData();
@@ -57,14 +58,21 @@ const HomeManagement: React.FC = () => {
     setLoading(true);
 
     const formData = new FormData();
-    formData.append("SliderImage", JSON.stringify(sliderImages));
-    formData.append("Mission", JSON.stringify(mission));
-    formData.append("Vission", JSON.stringify(vission));
-    formData.append("Objective", JSON.stringify(objective));
-    formData.append("Outcomes", JSON.stringify(outcomes));
-    formData.append("scopeImage", scopeImage);
-    formData.append("applicationImage", applicationImage);
-    formData.append("modalImage", modalImage);
+
+    // Append slider images
+    sliderImages.forEach((file) => {
+      formData.append(`sliderImages`, file);
+    });
+
+    // Append other fields
+    formData.append("Mission", event.currentTarget.mission.value);
+    formData.append("Vission", event.currentTarget.vission.value);
+    formData.append("Objective", event.currentTarget.objective.value);
+    formData.append("Outcomes", event.currentTarget.outcome.value);
+
+    if (scopeImage) formData.append("scopeImage", scopeImage);
+    if (applicationImage) formData.append("applicationImage", applicationImage);
+    if (modalImage) formData.append("modalImage", modalImage);
 
     try {
       let res;
@@ -93,14 +101,14 @@ const HomeManagement: React.FC = () => {
 
   const handleEdit = (home: Home) => {
     setEditHome(home);
-    setSliderImages(home.SliderImage);
     setMission(home.Mission);
     setVission(home.Vission);
     setObjective(home.Objective);
     setOutcomes(home.Outcomes);
-    setScopeImage(home.scopeImage);
-    setApplicationImage(home.applicationImage);
-    setModalImage(home.modalImage);
+    setScopeImage(null);
+    setApplicationImage(null);
+    setModalImage(null);
+    setSliderImagePreviews(home.SliderImage); // Set previews for existing slider images
     setShowModal(true);
   };
 
@@ -108,13 +116,31 @@ const HomeManagement: React.FC = () => {
     setShowModal(false);
     setEditHome(null);
     setSliderImages([]);
+    setSliderImagePreviews([]); // Clear slider image previews
     setMission([]);
     setVission([]);
     setObjective([]);
     setOutcomes([]);
-    setScopeImage("");
-    setApplicationImage("");
-    setModalImage("");
+    setScopeImage(null);
+    setApplicationImage(null);
+    setModalImage(null);
+  };
+
+  const handleSliderImageChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    index: number
+  ) => {
+    if (e.target.files && e.target.files[0]) {
+      const newSliderImages = [...sliderImages];
+      const newSliderImagePreviews = [...sliderImagePreviews];
+
+      const file = e.target.files[0];
+      newSliderImages[index] = file;
+      newSliderImagePreviews[index] = URL.createObjectURL(file); // Generate preview URL
+
+      setSliderImages(newSliderImages);
+      setSliderImagePreviews(newSliderImagePreviews);
+    }
   };
 
   return (
@@ -123,12 +149,12 @@ const HomeManagement: React.FC = () => {
       <div className="p-4 mt-24">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-semibold">Home Management</h2>
-          <button
+          {/* <button
             className="px-4 py-2 bg-blue-600 text-white rounded"
             onClick={() => setShowModal(true)}
           >
             + Add Entry
-          </button>
+          </button> */}
         </div>
 
         {/* Home Data Table */}
@@ -213,28 +239,32 @@ const HomeManagement: React.FC = () => {
                   <label className="block text-sm font-medium text-gray-700">
                     Slider Images
                   </label>
-                  {sliderImages.map((img, index) => (
+                  {sliderImagePreviews.map((preview, index) => (
                     <div
                       key={index}
                       className="flex items-center space-x-2 mb-2"
                     >
+                      <img
+                        src={preview}
+                        alt={`Slider Preview ${index + 1}`}
+                        className="h-12 w-12 rounded"
+                      />
                       <input
-                        type="text"
-                        value={img}
-                        onChange={(e) => {
-                          const newSliderImages = [...sliderImages];
-                          newSliderImages[index] = e.target.value;
-                          setSliderImages(newSliderImages);
-                        }}
+                        type="file"
+                        onChange={(e) => handleSliderImageChange(e, index)}
                         className="w-full border p-2 rounded"
                       />
                       <button
                         type="button"
-                        onClick={() =>
-                          setSliderImages(
-                            sliderImages.filter((_, i) => i !== index)
-                          )
-                        }
+                        onClick={() => {
+                          const newSliderImages = sliderImages.filter(
+                            (_, i) => i !== index
+                          );
+                          const newSliderImagePreviews =
+                            sliderImagePreviews.filter((_, i) => i !== index);
+                          setSliderImages(newSliderImages);
+                          setSliderImagePreviews(newSliderImagePreviews);
+                        }}
                         className="text-red-600"
                       >
                         X
@@ -243,210 +273,134 @@ const HomeManagement: React.FC = () => {
                   ))}
                   <button
                     type="button"
-                    onClick={() => setSliderImages([...sliderImages, ""])}
+                    onClick={() => {
+                      setSliderImages([...sliderImages, new File([], "")]);
+                      setSliderImagePreviews([...sliderImagePreviews, ""]);
+                    }}
                     className="bg-gray-200 px-2 py-1 rounded mb-2"
                   >
                     + Add Slider Image
                   </button>
                 </div>
 
-                {/* Mission */}
+                {/* Mission, Vission, Objective, Outcomes (unchanged) */}
+                {/* ... */}
+
                 <div>
                   <label className="block text-sm font-medium text-gray-700">
                     Mission
                   </label>
-                  {mission.map((item, index) => (
-                    <div
-                      key={index}
-                      className="flex items-center space-x-2 mb-2"
-                    >
-                      <input
-                        type="text"
-                        value={item}
-                        onChange={(e) => {
-                          const newMission = [...mission];
-                          newMission[index] = e.target.value;
-                          setMission(newMission);
-                        }}
-                        className="w-full border p-2 rounded"
-                      />
-                      <button
-                        type="button"
-                        onClick={() =>
-                          setMission(mission.filter((_, i) => i !== index))
-                        }
-                        className="text-red-600"
-                      >
-                        X
-                      </button>
-                    </div>
-                  ))}
-                  <button
-                    type="button"
-                    onClick={() => setMission([...mission, ""])}
-                    className="bg-gray-200 px-2 py-1 rounded mb-2"
-                  >
-                    + Add Mission
-                  </button>
+
+                  <textarea
+                    name="mission"
+                    defaultValue={mission || ""}
+                    className="w-full border p-2 rounded"
+                  />
                 </div>
 
-                {/* Vission */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700">
                     Vission
                   </label>
-                  {vission.map((item, index) => (
-                    <div
-                      key={index}
-                      className="flex items-center space-x-2 mb-2"
-                    >
-                      <input
-                        type="text"
-                        value={item}
-                        onChange={(e) => {
-                          const newVission = [...vission];
-                          newVission[index] = e.target.value;
-                          setVission(newVission);
-                        }}
-                        className="w-full border p-2 rounded"
-                      />
-                      <button
-                        type="button"
-                        onClick={() =>
-                          setVission(vission.filter((_, i) => i !== index))
-                        }
-                        className="text-red-600"
-                      >
-                        X
-                      </button>
-                    </div>
-                  ))}
-                  <button
-                    type="button"
-                    onClick={() => setVission([...vission, ""])}
-                    className="bg-gray-200 px-2 py-1 rounded mb-2"
-                  >
-                    + Add Vission
-                  </button>
+
+                  <textarea
+                    name="vission"
+                    defaultValue={vission || ""}
+                    className="w-full border p-2 rounded"
+                  />
                 </div>
 
-                {/* Objective */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700">
                     Objective
                   </label>
-                  {objective.map((item, index) => (
-                    <div
-                      key={index}
-                      className="flex items-center space-x-2 mb-2"
-                    >
-                      <input
-                        type="text"
-                        value={item}
-                        onChange={(e) => {
-                          const newObjective = [...objective];
-                          newObjective[index] = e.target.value;
-                          setObjective(newObjective);
-                        }}
-                        className="w-full border p-2 rounded"
-                      />
-                      <button
-                        type="button"
-                        onClick={() =>
-                          setObjective(objective.filter((_, i) => i !== index))
-                        }
-                        className="text-red-600"
-                      >
-                        X
-                      </button>
-                    </div>
-                  ))}
-                  <button
-                    type="button"
-                    onClick={() => setObjective([...objective, ""])}
-                    className="bg-gray-200 px-2 py-1 rounded mb-2"
-                  >
-                    + Add Objective
-                  </button>
+
+                  <textarea
+                    name="objective"
+                    defaultValue={objective || ""}
+                    className="w-full border p-2 rounded"
+                  />
                 </div>
 
-                {/* Outcomes */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700">
                     Outcomes
                   </label>
-                  {outcomes.map((item, index) => (
-                    <div
-                      key={index}
-                      className="flex items-center space-x-2 mb-2"
-                    >
-                      <input
-                        type="text"
-                        value={item}
-                        onChange={(e) => {
-                          const newOutcomes = [...outcomes];
-                          newOutcomes[index] = e.target.value;
-                          setOutcomes(newOutcomes);
-                        }}
-                        className="w-full border p-2 rounded"
-                      />
-                      <button
-                        type="button"
-                        onClick={() =>
-                          setOutcomes(outcomes.filter((_, i) => i !== index))
-                        }
-                        className="text-red-600"
-                      >
-                        X
-                      </button>
-                    </div>
-                  ))}
-                  <button
-                    type="button"
-                    onClick={() => setOutcomes([...outcomes, ""])}
-                    className="bg-gray-200 px-2 py-1 rounded mb-2"
-                  >
-                    + Add Outcome
-                  </button>
+
+                  <textarea
+                    name="outcome"
+                    defaultValue={outcomes || ""}
+                    className="w-full border p-2 rounded"
+                  />
                 </div>
 
                 {/* Scope Image */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700">
-                    Scope Image URL
+                    Scope Image
                   </label>
                   <input
-                    type="text"
-                    value={scopeImage}
-                    onChange={(e) => setScopeImage(e.target.value)}
+                    type="file"
+                    onChange={(e) => {
+                      if (e.target.files && e.target.files[0]) {
+                        setScopeImage(e.target.files[0]);
+                      }
+                    }}
                     className="w-full border p-2 rounded"
                   />
+                  {editHome?.scopeImage && !scopeImage && (
+                    <img
+                      src={editHome.scopeImage}
+                      alt="Scope Preview"
+                      className="h-12 w-12 rounded mt-2"
+                    />
+                  )}
                 </div>
 
                 {/* Application Image */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700">
-                    Application Image URL
+                    Application Image
                   </label>
                   <input
-                    type="text"
-                    value={applicationImage}
-                    onChange={(e) => setApplicationImage(e.target.value)}
+                    type="file"
+                    onChange={(e) => {
+                      if (e.target.files && e.target.files[0]) {
+                        setApplicationImage(e.target.files[0]);
+                      }
+                    }}
                     className="w-full border p-2 rounded"
                   />
+                  {editHome?.applicationImage && !applicationImage && (
+                    <img
+                      src={editHome.applicationImage}
+                      alt="Application Preview"
+                      className="h-12 w-12 rounded mt-2"
+                    />
+                  )}
                 </div>
 
                 {/* Modal Image */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700">
-                    Modal Image URL
+                    Modal Image
                   </label>
                   <input
-                    type="text"
-                    value={modalImage}
-                    onChange={(e) => setModalImage(e.target.value)}
+                    type="file"
+                    onChange={(e) => {
+                      if (e.target.files && e.target.files[0]) {
+                        setModalImage(e.target.files[0]);
+                      }
+                    }}
                     className="w-full border p-2 rounded"
                   />
+                  {editHome?.modalImage && !modalImage && (
+                    <img
+                      src={editHome.modalImage}
+                      alt="Modal Preview"
+                      className="h-12 w-12 rounded mt-2"
+                    />
+                  )}
                 </div>
 
                 {/* Submit Button */}

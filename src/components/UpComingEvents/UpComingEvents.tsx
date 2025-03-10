@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react"
-import { motion } from "framer-motion"
-import Autoplay from "embla-carousel-autoplay"
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import Autoplay from "embla-carousel-autoplay";
 import {
   Carousel,
   CarouselContent,
@@ -8,14 +8,13 @@ import {
   // CarouselNext,
   // CarouselPrevious,
   type CarouselApi,
-} from "../../components/ui/carousel"
-import { cn } from "../../lib/utils"
-import { upComingEventsData } from "../../utils/data";
-import Eventslide from "../Hero/UpdatesSlide"
+} from "../../components/ui/carousel";
+import { cn } from "../../lib/utils";
 
+import { GetHomeApi } from "../../Api/Admin/HomeApi";
+import Eventslide from "../Hero/UpdatesSlide";
 
 // Sample data - replace with your actual data import
-
 
 // const CountDown = ({ dateInt }: { dateInt: string }) => {
 //   const [days, setDays] = useState(0)
@@ -77,23 +76,43 @@ import Eventslide from "../Hero/UpdatesSlide"
 // }
 
 const UpComingEvents = () => {
-  const [api, setApi] = useState<CarouselApi>()
-  const [current, setCurrent] = useState(0)
-  const [count, setCount] = useState(0)
+  const [api, setApi] = useState<CarouselApi>();
+  const [current, setCurrent] = useState(0);
+  const [count, setCount] = useState(0);
+  const [carosaldata, setCarosalData] = useState<any>([]);
+  console.log(count)
 
   // Track the current slide and total count
   useEffect(() => {
-    if (!api) return
-
-    setCount(api.scrollSnapList().length)
-    setCurrent(api.selectedScrollSnap())
+    if (!api) return;
+    setCount(api.scrollSnapList().length);
+    setCurrent(api.selectedScrollSnap());
 
     api.on("select", () => {
-      setCurrent(api.selectedScrollSnap())
-    })
-  }, [api])
+      setCurrent(api.selectedScrollSnap());
+    });
+  }, [api]);
 
-  const plugin = Autoplay({ delay: 5000, stopOnInteraction: false })
+  const plugin = Autoplay({ delay: 5000, stopOnInteraction: false });
+
+  useEffect(() => {
+    fetchHomeData();
+  }, []);
+
+  const fetchHomeData = async () => {
+    try {
+      const data = await GetHomeApi();
+      console.log(data);
+      if (data.status) {
+        setCarosalData(data.data[0]);
+        console.log(carosaldata.SliderImage);
+      } else {
+        setCarosalData([]);
+      }
+    } catch (error) {
+      console.error("Error fetching home data:", error);
+    }
+  };
 
   return (
     <motion.div
@@ -112,18 +131,24 @@ const UpComingEvents = () => {
           }}
         >
           <CarouselContent className="h-[80vh]">
-            {upComingEventsData.map((event, index) => (
-              <CarouselItem key={index} className="relative overflow-hidden rounded-xl">
-                <img
-                  src={event.url || "/placeholder.svg"}
-                  alt={event.title}
-                  className={cn("h-[80vh] w-full select-none", index === 0 ? "object-cover" : "object-cover")}
-                />
+            {carosaldata?.SliderImage &&
+              carosaldata?.SliderImage.map((event: any, index: any) => (
+                <CarouselItem
+                  key={index}
+                  className="relative overflow-hidden rounded-xl"
+                >
+                  <img
+                    src={event}
+                    alt="Image"
+                    className={cn(
+                      "h-[80vh] w-full select-none",
+                      index === 0 ? "object-cover" : "object-cover"
+                    )}
+                  />
 
-                {/* Overlay with event details */}
-              
-              </CarouselItem>
-            ))}
+                  {/* Overlay with event details */}
+                </CarouselItem>
+              ))}
           </CarouselContent>
 
           {/* Custom navigation buttons */}
@@ -134,30 +159,30 @@ const UpComingEvents = () => {
 
           {/* Custom pagination indicators */}
           <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-2 z-10">
-            {Array.from({ length: count }).map((_, i) => (
-              <button
-                key={i}
-                className={cn(
-                  "w-2.5 h-2.5 rounded-full transition-all duration-300",
-                  current === i ? "bg-white w-8" : "bg-white/50 hover:bg-white/80",
-                )}
-                onClick={() => api?.scrollTo(i)}
-                aria-label={`Go to slide ${i + 1}`}
-              />
-            ))}
+            {Array.from({ length: carosaldata?.SliderImage?.length + 1 }).map(
+              (_, i) => (
+                <button
+                  key={i}
+                  className={cn(
+                    "w-2.5 h-2.5 rounded-full transition-all duration-300",
+                    current === i
+                      ? "bg-white w-8"
+                      : "bg-white/50 hover:bg-white/80"
+                  )}
+                  onClick={() => api?.scrollTo(i)}
+                  aria-label={`Go to slide ${i + 1}`}
+                />
+              )
+            )}
           </div>
         </Carousel>
         <Eventslide></Eventslide>
       </div>
-     
     </motion.div>
-  )
-}
+  );
+};
 
-export default UpComingEvents
-
-
-
+export default UpComingEvents;
 
 // // import { BsDot } from "react-icons/bs"
 // // import CountDown from "./CountDown.tsx"
