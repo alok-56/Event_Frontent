@@ -516,6 +516,7 @@ const Students: React.FC = () => {
   const [editStudent, setEditStudent] = useState<Student | null>(null);
   const [loading, setLoading] = useState(false);
   const [deleting, setDeleting] = useState<string | null>(null);
+  console.log(deleting)
 
   // Multi-value fields
   const [education, setEducation] = useState<string[]>([]);
