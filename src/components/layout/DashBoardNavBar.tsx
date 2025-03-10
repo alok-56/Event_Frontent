@@ -42,6 +42,7 @@ export default function DashBoardNavBar() {
   };
 
   const navItems = [
+    { name: "Home", href: "/admin/homemanagment" },
     { name: "Collaborators", href: "/admin/collabaration" },
     {
       name: "People",

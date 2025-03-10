@@ -11,6 +11,7 @@ import {
 } from "../../components/ui/carousel"
 import { cn } from "../../lib/utils"
 import { upComingEventsData } from "../../utils/data";
+import Eventslide from "../Hero/eventslide"
 
 // Sample data - replace with your actual data import
 
@@ -145,7 +146,9 @@ const UpComingEvents = () => {
             ))}
           </div>
         </Carousel>
+        <Eventslide></Eventslide>
       </div>
+     
     </motion.div>
   )
 }

@@ -20,6 +20,7 @@ import Staff from "./pages/AdminPage/Staff.tsx";
 import Students from "./pages/AdminPage/Students.tsx";
 import Resaerch from "./pages/AdminPage/Resaerch.tsx";
 import ProtectedRoute from "./protectedRoutes/ProtectedRoute.tsx";
+import HomeManagement from "./pages/AdminPage/HomeManagement.tsx";
 
 const App = () => {
   return (
@@ -58,6 +59,7 @@ const App = () => {
           <Route path="people/research" element={<Resaerch />} />
           <Route path="people/staff" element={<Staff />} />
           <Route path="people/students" element={<Students />} />
+          <Route path="homemanagment" element={<HomeManagement />} />
         </Route>
       </Routes>
     </Router>

@@ -110,6 +110,7 @@ export default function Navbar() {
         </p>
 
         <div className="flex items-center justify-between w-full">
+        
           {/* Logo */}
           <motion.div
             whileHover={{ scale: 1.05 }}
@@ -123,6 +124,9 @@ export default function Navbar() {
               />
             </Link>
           </motion.div>
+
+          
+
 
           {/* Desktop Navigation */}
           <nav className="hidden md:block">

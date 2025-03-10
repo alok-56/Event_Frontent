@@ -43,6 +43,8 @@ const Event: React.FC = () => {
     formData.append("type", event.currentTarget.type.value);
     formData.append("eventlocation", event.currentTarget.eventlocation.value);
     formData.append("eventdate", event.currentTarget.eventdate.value);
+    formData.append("link", event.currentTarget.link.value);
+
 
     if (selectedFile) {
       formData.append("file", selectedFile);
@@ -178,7 +180,7 @@ const Event: React.FC = () => {
         )}
 
         {showModal && (
-          <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center">
+          <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center mt-20">
             <div className="bg-white p-6 rounded shadow-lg w-96">
               <h2 className="text-lg font-semibold mb-4">
                 {editEvent ? "Edit Event" : "Add New Event"}
@@ -219,6 +221,16 @@ const Event: React.FC = () => {
                     type="date"
                     name="eventdate"
                     defaultValue={editEvent?.eventdate || ""}
+                    required
+                    className="w-full border p-2 rounded"
+                  />
+                </div>
+                <div className="mb-3">
+                  <label className="block">Event Link :</label>
+                  <input
+                    type="text"
+                    name="link"
+                    defaultValue={editEvent?.link || ""}
                     required
                     className="w-full border p-2 rounded"
                   />
