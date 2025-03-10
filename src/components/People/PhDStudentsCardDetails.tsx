@@ -48,7 +48,7 @@ const PhDStudentsCardDetails = ({ item, setOpen }: any) => {
             <div className=" font-Poppins w-[100%]">{item.About}</div>
           )}
         </div>
-        {item.Education && (
+        {item?.Education?.length > 0 && (
           <div className=" mb-3">
             <div className=" font-Poppins font-bold mb-2">Education</div>
             <div className=" md:flex justify-between">
@@ -65,7 +65,7 @@ const PhDStudentsCardDetails = ({ item, setOpen }: any) => {
             </div>
           </div>
         )}
-        {item?.Experience && (
+        {item?.Experience?.length > 0 && (
           <div className=" mb-3">
             <div className=" font-Poppins font-bold mb-2">Work Experience</div>
             <div className=" md:flex justify-between">
@@ -83,7 +83,7 @@ const PhDStudentsCardDetails = ({ item, setOpen }: any) => {
           </div>
         )}
 
-        {item.Skills && (
+        {item?.Skills?.length > 0 && (
           <div className=" mb-3">
             <div className=" font-Poppins font-bold mb-2">Skills</div>
             <div className=" md:flex justify-between">
@@ -101,7 +101,7 @@ const PhDStudentsCardDetails = ({ item, setOpen }: any) => {
           </div>
         )}
 
-        {item.Interest && (
+        {item?.Interest?.length > 0 && (
           <div className=" mb-3">
             <div className=" font-Poppins font-bold mb-2">Area of Interest</div>
             <div className=" md:flex justify-between">
@@ -119,7 +119,7 @@ const PhDStudentsCardDetails = ({ item, setOpen }: any) => {
           </div>
         )}
 
-        {item.Awards && (
+        {item?.Awards?.length > 0 && (
           <div className=" mb-3">
             <div className=" font-Poppins font-bold mb-2">Awards</div>
             <div className=" md:flex justify-between">
@@ -137,7 +137,7 @@ const PhDStudentsCardDetails = ({ item, setOpen }: any) => {
           </div>
         )}
 
-        {item.Patents && (
+        {item?.Patents?.length>0 && (
           <div className=" mb-3">
             <div className=" font-Poppins font-bold mb-2">Patents</div>
             <div className=" md:flex justify-between">
@@ -155,7 +155,7 @@ const PhDStudentsCardDetails = ({ item, setOpen }: any) => {
           </div>
         )}
 
-        {item.exam && (
+        {item?.exam?.length>0 && (
           <div>
             <div className=" font-Poppins font-bold mb-1">Exam Qualified</div>
             <div>
@@ -168,7 +168,7 @@ const PhDStudentsCardDetails = ({ item, setOpen }: any) => {
             </div>
           </div>
         )}
-        {item.Links && (
+        {item?.Links?.length>0 && (
           <div className="mt-4">
             <div className="font-Poppins font-bold mb-1">Associated Links</div>
             {item.Links.map((link: any, index: number) => (
