@@ -11,7 +11,8 @@ import {
 } from "../../components/ui/carousel"
 import { cn } from "../../lib/utils"
 import { upComingEventsData } from "../../utils/data";
-import Eventslide from "../Hero/eventslide"
+import Eventslide from "../Hero/UpdatesSlide"
+
 
 // Sample data - replace with your actual data import
 
